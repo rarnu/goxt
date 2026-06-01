@@ -418,95 +418,91 @@ func TestXString_SubstringWithStartIndex(t *testing.T) {
 
 func TestXString_SubstringBefore(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.SubstringBefore(goxt.XString("-"), nil)
+	result1 := s1.SubstringBefore("-", nil)
 	assert.EqualValues(t, "hello", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.SubstringBefore(goxt.XString("-"), nil)
+	result2 := s2.SubstringBefore("-", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.SubstringBefore(goxt.XString("-"), &defaultVal)
+	result3 := s3.SubstringBefore("-", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.SubstringBefore(goxt.XString("-"), nil)
+	result4 := s4.SubstringBefore("-", nil)
 	assert.EqualValues(t, "a", result4)
 }
 
 func TestXString_SubstringAfter(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.SubstringAfter(goxt.XString("-"), nil)
+	result1 := s1.SubstringAfter("-", nil)
 	assert.EqualValues(t, "world-foo", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.SubstringAfter(goxt.XString("-"), nil)
+	result2 := s2.SubstringAfter("-", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.SubstringAfter(goxt.XString("-"), &defaultVal)
+	result3 := s3.SubstringAfter("-", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.SubstringAfter(goxt.XString("-"), nil)
+	result4 := s4.SubstringAfter("-", nil)
 	assert.EqualValues(t, "b-c", result4)
 }
 
 func TestXString_SubstringBeforeLast(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.SubstringBeforeLast(goxt.XString("-"), nil)
+	result1 := s1.SubstringBeforeLast("-", nil)
 	assert.EqualValues(t, "hello-world", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.SubstringBeforeLast(goxt.XString("-"), nil)
+	result2 := s2.SubstringBeforeLast("-", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.SubstringBeforeLast(goxt.XString("-"), &defaultVal)
+	result3 := s3.SubstringBeforeLast("-", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.SubstringBeforeLast(goxt.XString("-"), nil)
+	result4 := s4.SubstringBeforeLast("-", nil)
 	assert.EqualValues(t, "a-b", result4)
 }
 
 func TestXString_SubstringAfterLast(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.SubstringAfterLast(goxt.XString("-"), nil)
+	result1 := s1.SubstringAfterLast("-", nil)
 	assert.EqualValues(t, "foo", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.SubstringAfterLast(goxt.XString("-"), nil)
+	result2 := s2.SubstringAfterLast("-", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.SubstringAfterLast(goxt.XString("-"), &defaultVal)
+	result3 := s3.SubstringAfterLast("-", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.SubstringAfterLast(goxt.XString("-"), nil)
+	result4 := s4.SubstringAfterLast("-", nil)
 	assert.EqualValues(t, "c", result4)
 }
 
 func TestXString_ReplaceRange(t *testing.T) {
 	s1 := goxt.XString("hello")
-	assert.EqualValues(t, "heXYZ", s1.ReplaceRange(2, 5, goxt.XString("XYZ")))
+	assert.EqualValues(t, "heXYZ", s1.ReplaceRange(2, 5, "XYZ"))
 
 	s2 := goxt.XString("hello")
-	assert.EqualValues(t, "heXYZo", s2.ReplaceRange(2, 4, goxt.XString("XYZ")))
+	assert.EqualValues(t, "heXYZo", s2.ReplaceRange(2, 4, "XYZ"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s3.ReplaceRange(3, 2, goxt.XString("XYZ")))
+	assert.EqualValues(t, "hello", s3.ReplaceRange(3, 2, "XYZ"))
 
 	s4 := goxt.XString("hello")
-	assert.EqualValues(t, "XYZ", s4.ReplaceRange(0, 5, goxt.XString("XYZ")))
+	assert.EqualValues(t, "XYZ", s4.ReplaceRange(0, 5, "XYZ"))
 
 	s5 := goxt.XString("你好世界")
-	assert.EqualValues(t, "你XYZ", s5.ReplaceRange(1, 4, goxt.XString("XYZ")))
+	assert.EqualValues(t, "你XYZ", s5.ReplaceRange(1, 4, "XYZ"))
 }
 
 func TestXString_RemoveRange(t *testing.T) {
@@ -525,489 +521,485 @@ func TestXString_RemoveRange(t *testing.T) {
 
 func TestXString_RemovePrefix(t *testing.T) {
 	s1 := goxt.XString("hello-world")
-	assert.EqualValues(t, "-world", s1.RemovePrefix(goxt.XString("hello")))
+	assert.EqualValues(t, "-world", s1.RemovePrefix("hello"))
 
 	s2 := goxt.XString("hello-world")
-	assert.EqualValues(t, "hello-world", s2.RemovePrefix(goxt.XString("xyz")))
+	assert.EqualValues(t, "hello-world", s2.RemovePrefix("xyz"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "", s3.RemovePrefix(goxt.XString("hello")))
+	assert.EqualValues(t, "", s3.RemovePrefix("hello"))
 
 	s4 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s4.RemovePrefix(goxt.XString("")))
+	assert.EqualValues(t, "hello", s4.RemovePrefix(""))
 }
 
 func TestXString_RemoveSuffix(t *testing.T) {
 	s1 := goxt.XString("hello-world")
-	assert.EqualValues(t, "hello-", s1.RemoveSuffix(goxt.XString("world")))
+	assert.EqualValues(t, "hello-", s1.RemoveSuffix("world"))
 
 	s2 := goxt.XString("hello-world")
-	assert.EqualValues(t, "hello-world", s2.RemoveSuffix(goxt.XString("xyz")))
+	assert.EqualValues(t, "hello-world", s2.RemoveSuffix("xyz"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "", s3.RemoveSuffix(goxt.XString("hello")))
+	assert.EqualValues(t, "", s3.RemoveSuffix("hello"))
 
 	s4 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s4.RemoveSuffix(goxt.XString("")))
+	assert.EqualValues(t, "hello", s4.RemoveSuffix(""))
 }
 
 func TestXString_RemoveSurrounding(t *testing.T) {
 	s1 := goxt.XString("[hello]")
-	assert.EqualValues(t, "hello", s1.RemoveSurrounding(goxt.XString("["), goxt.XString("]")))
+	assert.EqualValues(t, "hello", s1.RemoveSurrounding("[", "]"))
 
 	s2 := goxt.XString("[hello]")
-	assert.EqualValues(t, "[hello]", s2.RemoveSurrounding(goxt.XString("("), goxt.XString(")")))
+	assert.EqualValues(t, "[hello]", s2.RemoveSurrounding("(", ")"))
 
 	s3 := goxt.XString("((hello))")
-	assert.EqualValues(t, "hello", s3.RemoveSurrounding(goxt.XString("(("), goxt.XString("))")))
+	assert.EqualValues(t, "hello", s3.RemoveSurrounding("((", "))"))
 
 	s4 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s4.RemoveSurrounding(goxt.XString("["), goxt.XString("]")))
+	assert.EqualValues(t, "hello", s4.RemoveSurrounding("[", "]"))
 }
 
 func TestXString_ReplaceBefore(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.ReplaceBefore(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result1 := s1.ReplaceBefore("-", "XXX", nil)
 	assert.EqualValues(t, "XXX-world-foo", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.ReplaceBefore(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result2 := s2.ReplaceBefore("-", "XXX", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.ReplaceBefore(goxt.XString("-"), goxt.XString("XXX"), &defaultVal)
+	result3 := s3.ReplaceBefore("-", "XXX", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.ReplaceBefore(goxt.XString("-"), goxt.XString("X"), nil)
+	result4 := s4.ReplaceBefore("-", "X", nil)
 	assert.EqualValues(t, "X-b-c", result4)
 }
 
 func TestXString_ReplaceAfter(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.ReplaceAfter(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result1 := s1.ReplaceAfter("-", "XXX", nil)
 	assert.EqualValues(t, "hello-XXX", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.ReplaceAfter(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result2 := s2.ReplaceAfter("-", "XXX", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.ReplaceAfter(goxt.XString("-"), goxt.XString("XXX"), &defaultVal)
+	result3 := s3.ReplaceAfter("-", "XXX", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.ReplaceAfter(goxt.XString("-"), goxt.XString("X"), nil)
+	result4 := s4.ReplaceAfter("-", "X", nil)
 	assert.EqualValues(t, "a-X", result4)
 }
 
 func TestXString_ReplaceAfterLast(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.ReplaceAfterLast(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result1 := s1.ReplaceAfterLast("-", "XXX", nil)
 	assert.EqualValues(t, "hello-world-XXX", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.ReplaceAfterLast(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result2 := s2.ReplaceAfterLast("-", "XXX", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.ReplaceAfterLast(goxt.XString("-"), goxt.XString("XXX"), &defaultVal)
+	result3 := s3.ReplaceAfterLast("-", "XXX", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.ReplaceAfterLast(goxt.XString("-"), goxt.XString("X"), nil)
+	result4 := s4.ReplaceAfterLast("-", "X", nil)
 	assert.EqualValues(t, "a-b-X", result4)
 }
 
 func TestXString_ReplaceBeforeLast(t *testing.T) {
 	s1 := goxt.XString("hello-world-foo")
-	result1 := s1.ReplaceBeforeLast(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result1 := s1.ReplaceBeforeLast("-", "XXX", nil)
 	assert.EqualValues(t, "XXX-foo", result1)
 
 	s2 := goxt.XString("hello")
-	result2 := s2.ReplaceBeforeLast(goxt.XString("-"), goxt.XString("XXX"), nil)
+	result2 := s2.ReplaceBeforeLast("-", "XXX", nil)
 	assert.EqualValues(t, "hello", result2)
 
-	defaultVal := goxt.XString("not-found")
 	s3 := goxt.XString("hello")
-	result3 := s3.ReplaceBeforeLast(goxt.XString("-"), goxt.XString("XXX"), &defaultVal)
+	result3 := s3.ReplaceBeforeLast("-", "XXX", new(goxt.XString("not-found")))
 	assert.EqualValues(t, "not-found", result3)
 
 	s4 := goxt.XString("a-b-c")
-	result4 := s4.ReplaceBeforeLast(goxt.XString("-"), goxt.XString("X"), nil)
+	result4 := s4.ReplaceBeforeLast("-", "X", nil)
 	assert.EqualValues(t, "X-c", result4)
 }
 
 func TestXString_Replace(t *testing.T) {
 	s1 := goxt.XString("hello world")
-	assert.EqualValues(t, "hello universe", s1.Replace(goxt.XString("world"), goxt.XString("universe")))
+	assert.EqualValues(t, "hello universe", s1.Replace("world", "universe"))
 
 	s2 := goxt.XString("aaa")
-	assert.EqualValues(t, "bbb", s2.Replace(goxt.XString("a"), goxt.XString("b")))
+	assert.EqualValues(t, "bbb", s2.Replace("a", "b"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s3.Replace(goxt.XString("xyz"), goxt.XString("abc")))
+	assert.EqualValues(t, "hello", s3.Replace("xyz", "abc"))
 
 	s4 := goxt.XString("")
-	assert.EqualValues(t, "", s4.Replace(goxt.XString("a"), goxt.XString("b")))
+	assert.EqualValues(t, "", s4.Replace("a", "b"))
 }
 
 func TestXString_ReplaceIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World")
-	assert.EqualValues(t, "Hello Universe", s1.ReplaceIgnoreCase(goxt.XString("WORLD"), goxt.XString("Universe")))
+	assert.EqualValues(t, "Hello Universe", s1.ReplaceIgnoreCase("WORLD", "Universe"))
 
 	s2 := goxt.XString("AAA BBB AAA")
-	assert.EqualValues(t, "XXX BBB XXX", s2.ReplaceIgnoreCase(goxt.XString("aaa"), goxt.XString("XXX")))
+	assert.EqualValues(t, "XXX BBB XXX", s2.ReplaceIgnoreCase("aaa", "XXX"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s3.ReplaceIgnoreCase(goxt.XString("xyz"), goxt.XString("abc")))
+	assert.EqualValues(t, "hello", s3.ReplaceIgnoreCase("xyz", "abc"))
 
 	s4 := goxt.XString("HeLLo")
-	assert.EqualValues(t, "Hi", s4.ReplaceIgnoreCase(goxt.XString("HELLO"), goxt.XString("Hi")))
+	assert.EqualValues(t, "Hi", s4.ReplaceIgnoreCase("HELLO", "Hi"))
 }
 
 func TestXString_ReplaceFirst(t *testing.T) {
 	s1 := goxt.XString("aaa")
-	assert.EqualValues(t, "baa", s1.ReplaceFirst(goxt.XString("a"), goxt.XString("b")))
+	assert.EqualValues(t, "baa", s1.ReplaceFirst("a", "b"))
 
 	s2 := goxt.XString("hello world")
-	assert.EqualValues(t, "hi world", s2.ReplaceFirst(goxt.XString("hello"), goxt.XString("hi")))
+	assert.EqualValues(t, "hi world", s2.ReplaceFirst("hello", "hi"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s3.ReplaceFirst(goxt.XString("xyz"), goxt.XString("abc")))
+	assert.EqualValues(t, "hello", s3.ReplaceFirst("xyz", "abc"))
 
 	s4 := goxt.XString("aaa")
-	assert.EqualValues(t, "aaa", s4.ReplaceFirst(goxt.XString(""), goxt.XString("b")))
+	assert.EqualValues(t, "aaa", s4.ReplaceFirst("", "b"))
 }
 
 func TestXString_ReplaceFirstIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("AAA aaa")
-	assert.EqualValues(t, "BBB aaa", s1.ReplaceFirstIgnoreCase(goxt.XString("aaa"), goxt.XString("BBB")))
+	assert.EqualValues(t, "BBB aaa", s1.ReplaceFirstIgnoreCase("aaa", "BBB"))
 
 	s2 := goxt.XString("Hello WORLD")
-	assert.EqualValues(t, "Hi WORLD", s2.ReplaceFirstIgnoreCase(goxt.XString("hello"), goxt.XString("Hi")))
+	assert.EqualValues(t, "Hi WORLD", s2.ReplaceFirstIgnoreCase("hello", "Hi"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s3.ReplaceFirstIgnoreCase(goxt.XString("xyz"), goxt.XString("abc")))
+	assert.EqualValues(t, "hello", s3.ReplaceFirstIgnoreCase("xyz", "abc"))
 
 	s4 := goxt.XString("AaA")
-	assert.EqualValues(t, "X", s4.ReplaceFirstIgnoreCase(goxt.XString("AAA"), goxt.XString("X")))
+	assert.EqualValues(t, "X", s4.ReplaceFirstIgnoreCase("AAA", "X"))
 }
 
 func TestXString_StartsWith(t *testing.T) {
 	s1 := goxt.XString("hello world")
-	assert.True(t, bool(s1.StartsWith(goxt.XString("hello"))))
+	assert.True(t, bool(s1.StartsWith("hello")))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.StartsWith(goxt.XString("world"))))
+	assert.False(t, bool(s2.StartsWith("world")))
 
 	s3 := goxt.XString("")
-	assert.True(t, bool(s3.StartsWith(goxt.XString(""))))
+	assert.True(t, bool(s3.StartsWith("")))
 
 	s4 := goxt.XString("hello")
-	assert.True(t, bool(s4.StartsWith(goxt.XString(""))))
+	assert.True(t, bool(s4.StartsWith("")))
 }
 
 func TestXString_StartsWithIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World")
-	assert.True(t, bool(s1.StartsWithIgnoreCase(goxt.XString("HELLO"))))
+	assert.True(t, bool(s1.StartsWithIgnoreCase("HELLO")))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.StartsWithIgnoreCase(goxt.XString("WORLD"))))
+	assert.False(t, bool(s2.StartsWithIgnoreCase("WORLD")))
 
 	s3 := goxt.XString("HELLO")
-	assert.True(t, bool(s3.StartsWithIgnoreCase(goxt.XString("hello"))))
+	assert.True(t, bool(s3.StartsWithIgnoreCase("hello")))
 
 	s4 := goxt.XString("Hi")
-	assert.False(t, bool(s4.StartsWithIgnoreCase(goxt.XString("Hello"))))
+	assert.False(t, bool(s4.StartsWithIgnoreCase("Hello")))
 }
 
 func TestXString_StartsWithStartIndex(t *testing.T) {
 	s1 := goxt.XString("hello world")
-	assert.True(t, bool(s1.StartsWithStartIndex(goxt.XString("world"), 6)))
+	assert.True(t, bool(s1.StartsWithStartIndex("world", 6)))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.StartsWithStartIndex(goxt.XString("hello"), 1)))
+	assert.False(t, bool(s2.StartsWithStartIndex("hello", 1)))
 
 	s3 := goxt.XString("hello")
-	assert.False(t, bool(s3.StartsWithStartIndex(goxt.XString("hello"), 1)))
+	assert.False(t, bool(s3.StartsWithStartIndex("hello", 1)))
 
 	s4 := goxt.XString("hello")
-	assert.False(t, bool(s4.StartsWithStartIndex(goxt.XString("hello"), -1)))
+	assert.False(t, bool(s4.StartsWithStartIndex("hello", -1)))
 
 	s5 := goxt.XString("hello")
-	assert.True(t, bool(s5.StartsWithStartIndex(goxt.XString("ello"), 1)))
+	assert.True(t, bool(s5.StartsWithStartIndex("ello", 1)))
 }
 
 func TestXString_StartsWithStartIndexIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World")
-	assert.True(t, bool(s1.StartsWithStartIndexIgnoreCase(goxt.XString("WORLD"), 6)))
+	assert.True(t, bool(s1.StartsWithStartIndexIgnoreCase("WORLD", 6)))
 
 	s2 := goxt.XString("Hello")
-	assert.False(t, bool(s2.StartsWithStartIndexIgnoreCase(goxt.XString("HELLO"), 1)))
+	assert.False(t, bool(s2.StartsWithStartIndexIgnoreCase("HELLO", 1)))
 
 	s3 := goxt.XString("hello")
-	assert.False(t, bool(s3.StartsWithStartIndexIgnoreCase(goxt.XString("hello"), 10)))
+	assert.False(t, bool(s3.StartsWithStartIndexIgnoreCase("hello", 10)))
 
 	s4 := goxt.XString("Hi")
-	assert.False(t, bool(s4.StartsWithStartIndexIgnoreCase(goxt.XString("Hello"), 0)))
+	assert.False(t, bool(s4.StartsWithStartIndexIgnoreCase("Hello", 0)))
 
 	s5 := goxt.XString("Hello")
-	assert.True(t, bool(s5.StartsWithStartIndexIgnoreCase(goxt.XString("ELLO"), 1)))
+	assert.True(t, bool(s5.StartsWithStartIndexIgnoreCase("ELLO", 1)))
 }
 
 func TestXString_EndsWith(t *testing.T) {
 	s1 := goxt.XString("hello world")
-	assert.True(t, bool(s1.EndsWith(goxt.XString("world"))))
+	assert.True(t, bool(s1.EndsWith("world")))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.EndsWith(goxt.XString("world"))))
+	assert.False(t, bool(s2.EndsWith("world")))
 
 	s3 := goxt.XString("")
-	assert.True(t, bool(s3.EndsWith(goxt.XString(""))))
+	assert.True(t, bool(s3.EndsWith("")))
 
 	s4 := goxt.XString("hello")
-	assert.True(t, bool(s4.EndsWith(goxt.XString(""))))
+	assert.True(t, bool(s4.EndsWith("")))
 }
 
 func TestXString_EndsWithIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World")
-	assert.True(t, bool(s1.EndsWithIgnoreCase(goxt.XString("WORLD"))))
+	assert.True(t, bool(s1.EndsWithIgnoreCase("WORLD")))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.EndsWithIgnoreCase(goxt.XString("WORLD"))))
+	assert.False(t, bool(s2.EndsWithIgnoreCase("WORLD")))
 
 	s3 := goxt.XString("WORLD")
-	assert.True(t, bool(s3.EndsWithIgnoreCase(goxt.XString("world"))))
+	assert.True(t, bool(s3.EndsWithIgnoreCase("world")))
 
 	s4 := goxt.XString("Hi")
-	assert.False(t, bool(s4.EndsWithIgnoreCase(goxt.XString("Hello"))))
+	assert.False(t, bool(s4.EndsWithIgnoreCase("Hello")))
 }
 
 func TestXString_IndexOf(t *testing.T) {
 	s1 := goxt.XString("hello world")
-	assert.EqualValues(t, 0, s1.IndexOf(goxt.XString("hello")))
+	assert.EqualValues(t, 0, s1.IndexOf("hello"))
 
 	s2 := goxt.XString("hello world")
-	assert.EqualValues(t, 6, s2.IndexOf(goxt.XString("world")))
+	assert.EqualValues(t, 6, s2.IndexOf("world"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, -1, s3.IndexOf(goxt.XString("xyz")))
+	assert.EqualValues(t, -1, s3.IndexOf("xyz"))
 
 	s4 := goxt.XString("aaa")
-	assert.EqualValues(t, 0, s4.IndexOf(goxt.XString("a")))
+	assert.EqualValues(t, 0, s4.IndexOf("a"))
 }
 
 func TestXString_LastIndexOf(t *testing.T) {
 	s1 := goxt.XString("hello world hello")
-	assert.EqualValues(t, 12, s1.LastIndexOf(goxt.XString("hello")))
+	assert.EqualValues(t, 12, s1.LastIndexOf("hello"))
 
 	s2 := goxt.XString("aaa")
-	assert.EqualValues(t, 2, s2.LastIndexOf(goxt.XString("a")))
+	assert.EqualValues(t, 2, s2.LastIndexOf("a"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, -1, s3.LastIndexOf(goxt.XString("xyz")))
+	assert.EqualValues(t, -1, s3.LastIndexOf("xyz"))
 
 	s4 := goxt.XString("hello")
-	assert.EqualValues(t, 0, s4.LastIndexOf(goxt.XString("hello")))
+	assert.EqualValues(t, 0, s4.LastIndexOf("hello"))
 }
 
 func TestXString_IndexOfIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World")
-	assert.EqualValues(t, 0, s1.IndexOfIgnoreCase(goxt.XString("HELLO")))
+	assert.EqualValues(t, 0, s1.IndexOfIgnoreCase("HELLO"))
 
 	s2 := goxt.XString("Hello WORLD")
-	assert.EqualValues(t, 6, s2.IndexOfIgnoreCase(goxt.XString("world")))
+	assert.EqualValues(t, 6, s2.IndexOfIgnoreCase("world"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, -1, s3.IndexOfIgnoreCase(goxt.XString("xyz")))
+	assert.EqualValues(t, -1, s3.IndexOfIgnoreCase("xyz"))
 
 	s4 := goxt.XString("HeLLo")
-	assert.EqualValues(t, 0, s4.IndexOfIgnoreCase(goxt.XString("hello")))
+	assert.EqualValues(t, 0, s4.IndexOfIgnoreCase("hello"))
 }
 
 func TestXString_LastIndexOfIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World HELLO")
-	assert.EqualValues(t, 12, s1.LastIndexOfIgnoreCase(goxt.XString("hello")))
+	assert.EqualValues(t, 12, s1.LastIndexOfIgnoreCase("hello"))
 
 	s2 := goxt.XString("AAA aaa")
-	assert.EqualValues(t, 6, s2.LastIndexOfIgnoreCase(goxt.XString("a")))
+	assert.EqualValues(t, 6, s2.LastIndexOfIgnoreCase("a"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, -1, s3.LastIndexOfIgnoreCase(goxt.XString("xyz")))
+	assert.EqualValues(t, -1, s3.LastIndexOfIgnoreCase("xyz"))
 
 	s4 := goxt.XString("HeLLo")
-	assert.EqualValues(t, 0, s4.LastIndexOfIgnoreCase(goxt.XString("HELLO")))
+	assert.EqualValues(t, 0, s4.LastIndexOfIgnoreCase("HELLO"))
 }
 
 func TestXString_Contains(t *testing.T) {
 	s1 := goxt.XString("hello world")
-	assert.True(t, bool(s1.Contains(goxt.XString("hello"))))
+	assert.True(t, bool(s1.Contains("hello")))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.Contains(goxt.XString("xyz"))))
+	assert.False(t, bool(s2.Contains("xyz")))
 
 	s3 := goxt.XString("")
-	assert.True(t, bool(s3.Contains(goxt.XString(""))))
+	assert.True(t, bool(s3.Contains("")))
 
 	s4 := goxt.XString("hello")
-	assert.True(t, bool(s4.Contains(goxt.XString(""))))
+	assert.True(t, bool(s4.Contains("")))
 }
 
 func TestXString_ContainsIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("Hello World")
-	assert.True(t, bool(s1.ContainsIgnoreCase(goxt.XString("HELLO"))))
+	assert.True(t, bool(s1.ContainsIgnoreCase("HELLO")))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.ContainsIgnoreCase(goxt.XString("XYZ"))))
+	assert.False(t, bool(s2.ContainsIgnoreCase("XYZ")))
 
 	s3 := goxt.XString("HELLO")
-	assert.True(t, bool(s3.ContainsIgnoreCase(goxt.XString("hello"))))
+	assert.True(t, bool(s3.ContainsIgnoreCase("hello")))
 
 	s4 := goxt.XString("HeLLo WoRLd")
-	assert.True(t, bool(s4.ContainsIgnoreCase(goxt.XString("WORLD"))))
+	assert.True(t, bool(s4.ContainsIgnoreCase("WORLD")))
 }
 
 func TestXString_ContainsRegex(t *testing.T) {
 	s1 := goxt.XString("hello123")
-	assert.True(t, bool(s1.ContainsRegex(goxt.XString(`\d+`))))
+	assert.True(t, bool(s1.ContainsRegex(`\d+`)))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.ContainsRegex(goxt.XString(`\d+`))))
+	assert.False(t, bool(s2.ContainsRegex(`\d+`)))
 
 	s3 := goxt.XString("abc123def")
-	assert.True(t, bool(s3.ContainsRegex(goxt.XString(`[0-9]+`))))
+	assert.True(t, bool(s3.ContainsRegex(`[0-9]+`)))
 
 	s4 := goxt.XString("")
-	assert.False(t, bool(s4.ContainsRegex(goxt.XString(`.+`))))
+	assert.False(t, bool(s4.ContainsRegex(`.+`)))
 }
 
 func TestXString_Matches(t *testing.T) {
 	s1 := goxt.XString("hello123")
-	assert.True(t, bool(s1.Matches(goxt.XString(`^[a-z]+\d+$`))))
+	assert.True(t, bool(s1.Matches(`^[a-z]+\d+$`)))
 
 	s2 := goxt.XString("hello")
-	assert.False(t, bool(s2.Matches(goxt.XString(`^\d+$`))))
+	assert.False(t, bool(s2.Matches(`^\d+$`)))
 
 	s3 := goxt.XString("12345")
-	assert.True(t, bool(s3.Matches(goxt.XString(`^\d+$`))))
+	assert.True(t, bool(s3.Matches(`^\d+$`)))
 
 	s4 := goxt.XString("hello world")
-	assert.False(t, bool(s4.Matches(goxt.XString(`^hello$`))))
+	assert.False(t, bool(s4.Matches(`^hello$`)))
 }
 
 func TestXString_ReplaceRegex(t *testing.T) {
 	s1 := goxt.XString("hello123world456")
-	assert.EqualValues(t, "helloXworldX", s1.ReplaceRegex(goxt.XString(`\d+`), goxt.XString("X")))
+	assert.EqualValues(t, "helloXworldX", s1.ReplaceRegex(`\d+`, "X"))
 
 	s2 := goxt.XString("aaa bbb ccc")
-	assert.EqualValues(t, "XXX XXX XXX", s2.ReplaceRegex(goxt.XString(`\w+`), goxt.XString("XXX")))
+	assert.EqualValues(t, "XXX XXX XXX", s2.ReplaceRegex(`\w+`, "XXX"))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, "hello", s3.ReplaceRegex(goxt.XString(`\d+`), goxt.XString("X")))
+	assert.EqualValues(t, "hello", s3.ReplaceRegex(`\d+`, "X"))
 
 	s4 := goxt.XString("abc123def")
-	assert.EqualValues(t, "abcdef", s4.ReplaceRegex(goxt.XString(`\d+`), goxt.XString("")))
+	assert.EqualValues(t, "abcdef", s4.ReplaceRegex(`\d+`, ""))
 }
 
 func TestXString_ReplaceRegexFunc(t *testing.T) {
 	s1 := goxt.XString("hello123")
-	result1 := s1.ReplaceRegexFunc(goxt.XString(`\d+`), func(match goxt.XString) goxt.XString {
-		return goxt.XString("NUM")
+	result1 := s1.ReplaceRegexFunc(`\d+`, func(match goxt.XString) goxt.XString {
+		return "NUM"
 	})
 	assert.EqualValues(t, "helloNUM", result1)
 
 	s2 := goxt.XString("aa bb cc")
-	result2 := s2.ReplaceRegexFunc(goxt.XString(`\w+`), func(match goxt.XString) goxt.XString {
+	result2 := s2.ReplaceRegexFunc(`\w+`, func(match goxt.XString) goxt.XString {
 		return match.Uppercase()
 	})
 	assert.EqualValues(t, "AA BB CC", result2)
 
 	s3 := goxt.XString("hello")
-	result3 := s3.ReplaceRegexFunc(goxt.XString(`\d+`), func(match goxt.XString) goxt.XString {
-		return goxt.XString("X")
+	result3 := s3.ReplaceRegexFunc(`\d+`, func(match goxt.XString) goxt.XString {
+		return "X"
 	})
 	assert.EqualValues(t, "hello", result3)
 
 	s4 := goxt.XString("123")
-	result4 := s4.ReplaceRegexFunc(goxt.XString(`\d+`), func(match goxt.XString) goxt.XString {
-		return goxt.XString("456")
+	result4 := s4.ReplaceRegexFunc(`\d+`, func(match goxt.XString) goxt.XString {
+		return "456"
 	})
 	assert.EqualValues(t, "456", result4)
 }
 
 func TestXString_Split(t *testing.T) {
 	s1 := goxt.XString("a,b,c")
-	result1 := s1.Split(goxt.XString(","))
+	result1 := s1.Split(",")
 	assert.EqualValues(t, []goxt.XString{"a", "b", "c"}, result1)
 
 	s2 := goxt.XString("hello world")
-	result2 := s2.Split(goxt.XString(" "))
+	result2 := s2.Split(" ")
 	assert.EqualValues(t, []goxt.XString{"hello", "world"}, result2)
 
 	s3 := goxt.XString("a,b;c")
-	result3 := s3.Split(goxt.XString(","), goxt.XString(";"))
+	result3 := s3.Split(",", ";")
 	assert.EqualValues(t, []goxt.XString{"a", "b", "c"}, result3)
 
 	s4 := goxt.XString("hello")
-	result4 := s4.Split(goxt.XString(","))
+	result4 := s4.Split(",")
 	assert.EqualValues(t, []goxt.XString{"hello"}, result4)
 }
 
 func TestXString_SplitIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("aHELLObhelloc")
-	result1 := s1.SplitIgnoreCase(goxt.XString("hello"))
+	result1 := s1.SplitIgnoreCase("hello")
 	assert.EqualValues(t, []goxt.XString{"a", "b", "c"}, result1)
 
 	s2 := goxt.XString("A, B, C")
-	result2 := s2.SplitIgnoreCase(goxt.XString(", "))
+	result2 := s2.SplitIgnoreCase(", ")
 	assert.EqualValues(t, []goxt.XString{"A", "B", "C"}, result2)
 
 	s3 := goxt.XString("hello")
-	result3 := s3.SplitIgnoreCase(goxt.XString("WORLD"))
+	result3 := s3.SplitIgnoreCase("WORLD")
 	assert.EqualValues(t, []goxt.XString{"hello"}, result3)
 
 	s4 := goxt.XString("XxYyZz")
-	result4 := s4.SplitIgnoreCase(goxt.XString("XY"))
+	result4 := s4.SplitIgnoreCase("XY")
 	assert.EqualValues(t, []goxt.XString{"X", "yZz"}, result4)
 }
 
 func TestXString_SplitWithLimit(t *testing.T) {
 	s1 := goxt.XString("a,b,c,d")
-	result1 := s1.SplitWithLimit(3, goxt.XString(","))
+	result1 := s1.SplitWithLimit(3, ",")
 	assert.EqualValues(t, []goxt.XString{"a", "b", "c,d"}, result1)
 
 	s2 := goxt.XString("hello world foo bar")
-	result2 := s2.SplitWithLimit(2, goxt.XString(" "))
+	result2 := s2.SplitWithLimit(2, " ")
 	assert.EqualValues(t, []goxt.XString{"hello", "world foo bar"}, result2)
 
 	s3 := goxt.XString("a,b,c")
-	result3 := s3.SplitWithLimit(10, goxt.XString(","))
+	result3 := s3.SplitWithLimit(10, ",")
 	assert.EqualValues(t, []goxt.XString{"a", "b", "c"}, result3)
 
 	s4 := goxt.XString("a,b,c")
-	result4 := s4.SplitWithLimit(1, goxt.XString(","))
+	result4 := s4.SplitWithLimit(1, ",")
 	assert.EqualValues(t, []goxt.XString{"a,b,c"}, result4)
 }
 
 func TestXString_SplitWithLimitIgnoreCase(t *testing.T) {
 	s1 := goxt.XString("aHELLObHELLOcHELLod")
-	result1 := s1.SplitWithLimitIgnoreCase(3, goxt.XString("hello"))
+	result1 := s1.SplitWithLimitIgnoreCase(3, "hello")
 	assert.EqualValues(t, []goxt.XString{"a", "b", "cHELLod"}, result1)
 
 	s2 := goxt.XString("A, B, C, D")
-	result2 := s2.SplitWithLimitIgnoreCase(2, goxt.XString(", "))
+	result2 := s2.SplitWithLimitIgnoreCase(2, ", ")
 	assert.EqualValues(t, []goxt.XString{"A", "B, C, D"}, result2)
 
 	s3 := goxt.XString("hello")
-	result3 := s3.SplitWithLimitIgnoreCase(5, goxt.XString("WORLD"))
+	result3 := s3.SplitWithLimitIgnoreCase(5, "WORLD")
 	assert.EqualValues(t, []goxt.XString{"hello"}, result3)
 
 	s4 := goxt.XString("XxYyZz")
-	result4 := s4.SplitWithLimitIgnoreCase(2, goxt.XString("xy"))
+	result4 := s4.SplitWithLimitIgnoreCase(2, "xy")
 	assert.EqualValues(t, []goxt.XString{"X", "yZz"}, result4)
 }
 
@@ -1087,12 +1079,15 @@ func TestXString_ToBooleanOrNil(t *testing.T) {
 	s1 := goxt.XString("true")
 	result1 := s1.ToBooleanOrNil()
 	assert.NotNil(t, result1)
-	assert.True(t, bool(*result1))
-
+	if result1 != nil {
+		assert.True(t, bool(*result1))
+	}
 	s2 := goxt.XString("false")
 	result2 := s2.ToBooleanOrNil()
 	assert.NotNil(t, result2)
-	assert.False(t, bool(*result2))
+	if result2 != nil {
+		assert.False(t, bool(*result2))
+	}
 
 	s3 := goxt.XString("invalid")
 	result3 := s3.ToBooleanOrNil()
@@ -1101,7 +1096,9 @@ func TestXString_ToBooleanOrNil(t *testing.T) {
 	s4 := goxt.XString("TRUE")
 	result4 := s4.ToBooleanOrNil()
 	assert.NotNil(t, result4)
-	assert.True(t, bool(*result4))
+	if result4 != nil {
+		assert.True(t, bool(*result4))
+	}
 }
 
 func TestXString_ToInt(t *testing.T) {
@@ -1124,7 +1121,9 @@ func TestXString_ToIntOrNil(t *testing.T) {
 	s1 := goxt.XString("123")
 	result1 := s1.ToIntOrNil()
 	assert.NotNil(t, result1)
-	assert.EqualValues(t, 123, *result1)
+	if result1 != nil {
+		assert.EqualValues(t, 123, *result1)
+	}
 
 	s2 := goxt.XString("invalid")
 	result2 := s2.ToIntOrNil()
@@ -1133,7 +1132,9 @@ func TestXString_ToIntOrNil(t *testing.T) {
 	s3 := goxt.XString("-456")
 	result3 := s3.ToIntOrNil()
 	assert.NotNil(t, result3)
-	assert.EqualValues(t, -456, *result3)
+	if result3 != nil {
+		assert.EqualValues(t, -456, *result3)
+	}
 }
 
 func TestXString_ToInt64(t *testing.T) {
@@ -1156,7 +1157,9 @@ func TestXString_ToInt64OrNil(t *testing.T) {
 	s1 := goxt.XString("123456789")
 	result1 := s1.ToInt64OrNil()
 	assert.NotNil(t, result1)
-	assert.EqualValues(t, 123456789, *result1)
+	if result1 != nil {
+		assert.EqualValues(t, 123456789, *result1)
+	}
 
 	s2 := goxt.XString("invalid")
 	result2 := s2.ToInt64OrNil()
@@ -1165,7 +1168,9 @@ func TestXString_ToInt64OrNil(t *testing.T) {
 	s3 := goxt.XString("-987654321")
 	result3 := s3.ToInt64OrNil()
 	assert.NotNil(t, result3)
-	assert.EqualValues(t, -987654321, *result3)
+	if result3 != nil {
+		assert.EqualValues(t, -987654321, *result3)
+	}
 }
 
 func TestXString_ToFloat32(t *testing.T) {
@@ -1188,7 +1193,9 @@ func TestXString_ToFloat32OrNil(t *testing.T) {
 	s1 := goxt.XString("123.45")
 	result1 := s1.ToFloat32OrNil()
 	assert.NotNil(t, result1)
-	assert.InDelta(t, 123.45, float32(*result1), 0.01)
+	if result1 != nil {
+		assert.InDelta(t, 123.45, float32(*result1), 0.01)
+	}
 
 	s2 := goxt.XString("invalid")
 	result2 := s2.ToFloat32OrNil()
@@ -1197,7 +1204,9 @@ func TestXString_ToFloat32OrNil(t *testing.T) {
 	s3 := goxt.XString("-67.89")
 	result3 := s3.ToFloat32OrNil()
 	assert.NotNil(t, result3)
-	assert.InDelta(t, -67.89, float32(*result3), 0.01)
+	if result3 != nil {
+		assert.InDelta(t, -67.89, float32(*result3), 0.01)
+	}
 }
 
 func TestXString_ToFloat64(t *testing.T) {
@@ -1220,7 +1229,9 @@ func TestXString_ToFloat64OrNil(t *testing.T) {
 	s1 := goxt.XString("123.456789")
 	result1 := s1.ToFloat64OrNil()
 	assert.NotNil(t, result1)
-	assert.InDelta(t, 123.456789, float64(*result1), 0.0001)
+	if result1 != nil {
+		assert.InDelta(t, 123.456789, float64(*result1), 0.0001)
+	}
 
 	s2 := goxt.XString("invalid")
 	result2 := s2.ToFloat64OrNil()
@@ -1229,7 +1240,9 @@ func TestXString_ToFloat64OrNil(t *testing.T) {
 	s3 := goxt.XString("-987.654321")
 	result3 := s3.ToFloat64OrNil()
 	assert.NotNil(t, result3)
-	assert.InDelta(t, -987.654321, float64(*result3), 0.0001)
+	if result3 != nil {
+		assert.InDelta(t, -987.654321, float64(*result3), 0.0001)
+	}
 }
 
 func TestXString_ToRuneArray(t *testing.T) {
@@ -1262,30 +1275,30 @@ func TestXString_ToByteArray(t *testing.T) {
 
 func TestXString_IndexOfWithStartIndex(t *testing.T) {
 	s1 := goxt.XString("hello hello")
-	assert.EqualValues(t, 6, s1.IndexOfWithStartIndex(goxt.XString("hello"), 1))
+	assert.EqualValues(t, 6, s1.IndexOfWithStartIndex("hello", 1))
 
 	s2 := goxt.XString("aaa")
-	assert.EqualValues(t, 1, s2.IndexOfWithStartIndex(goxt.XString("a"), 1))
+	assert.EqualValues(t, 1, s2.IndexOfWithStartIndex("a", 1))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, -1, s3.IndexOfWithStartIndex(goxt.XString("hello"), 10))
+	assert.EqualValues(t, -1, s3.IndexOfWithStartIndex("hello", 10))
 
 	s4 := goxt.XString("hello")
-	assert.EqualValues(t, 0, s4.IndexOfWithStartIndex(goxt.XString("hello"), -1))
+	assert.EqualValues(t, 0, s4.IndexOfWithStartIndex("hello", -1))
 }
 
 func TestXString_LastIndexOfWithStartIndex(t *testing.T) {
 	s1 := goxt.XString("hello hello hello")
-	assert.EqualValues(t, 6, s1.LastIndexOfWithStartIndex(goxt.XString("hello"), 10))
+	assert.EqualValues(t, 6, s1.LastIndexOfWithStartIndex("hello", 10))
 
 	s2 := goxt.XString("aaa")
-	assert.EqualValues(t, 1, s2.LastIndexOfWithStartIndex(goxt.XString("a"), 1))
+	assert.EqualValues(t, 1, s2.LastIndexOfWithStartIndex("a", 1))
 
 	s3 := goxt.XString("hello")
-	assert.EqualValues(t, -1, s3.LastIndexOfWithStartIndex(goxt.XString("hello"), -1))
+	assert.EqualValues(t, -1, s3.LastIndexOfWithStartIndex("hello", -1))
 
 	s4 := goxt.XString("hello hello")
-	assert.EqualValues(t, 0, s4.LastIndexOfWithStartIndex(goxt.XString("hello"), 5))
+	assert.EqualValues(t, 0, s4.LastIndexOfWithStartIndex("hello", 5))
 }
 
 func TestXString_IndexOfAny(t *testing.T) {
@@ -1320,14 +1333,18 @@ func TestXString_FindAnyOf(t *testing.T) {
 	s1 := goxt.XString("hello world")
 	result1 := s1.FindAnyOf([]goxt.XString{"hello", "world"}, 0)
 	assert.NotNil(t, result1)
-	assert.EqualValues(t, 0, result1.Index)
-	assert.EqualValues(t, "hello", result1.Value)
+	if result1 != nil {
+		assert.EqualValues(t, 0, result1.Index)
+		assert.EqualValues(t, "hello", result1.Value)
+	}
 
 	s2 := goxt.XString("hello world")
 	result2 := s2.FindAnyOf([]goxt.XString{"world", "hello"}, 0)
 	assert.NotNil(t, result2)
-	assert.EqualValues(t, 0, result2.Index)
-	assert.EqualValues(t, "hello", result2.Value)
+	if result2 != nil {
+		assert.EqualValues(t, 0, result2.Index)
+		assert.EqualValues(t, "hello", result2.Value)
+	}
 
 	s3 := goxt.XString("hello")
 	result3 := s3.FindAnyOf([]goxt.XString{"xyz"}, 0)
@@ -1336,22 +1353,28 @@ func TestXString_FindAnyOf(t *testing.T) {
 	s4 := goxt.XString("abc def")
 	result4 := s4.FindAnyOf([]goxt.XString{"def"}, 0)
 	assert.NotNil(t, result4)
-	assert.EqualValues(t, 4, result4.Index)
-	assert.EqualValues(t, "def", result4.Value)
+	if result4 != nil {
+		assert.EqualValues(t, 4, result4.Index)
+		assert.EqualValues(t, "def", result4.Value)
+	}
 }
 
 func TestXString_FindLastAnyOf(t *testing.T) {
 	s1 := goxt.XString("hello world hello")
 	result1 := s1.FindLastAnyOf([]goxt.XString{"hello", "world"}, 16)
 	assert.NotNil(t, result1)
-	assert.EqualValues(t, 12, result1.Index)
-	assert.EqualValues(t, "hello", result1.Value)
+	if result1 != nil {
+		assert.EqualValues(t, 12, result1.Index)
+		assert.EqualValues(t, "hello", result1.Value)
+	}
 
 	s2 := goxt.XString("abc def abc")
 	result2 := s2.FindLastAnyOf([]goxt.XString{"abc", "def"}, 8)
 	assert.NotNil(t, result2)
-	assert.EqualValues(t, 4, result2.Index)
-	assert.EqualValues(t, "def", result2.Value)
+	if result2 != nil {
+		assert.EqualValues(t, 4, result2.Index)
+		assert.EqualValues(t, "def", result2.Value)
+	}
 
 	s3 := goxt.XString("hello")
 	result3 := s3.FindLastAnyOf([]goxt.XString{"xyz"}, 4)
@@ -1360,6 +1383,8 @@ func TestXString_FindLastAnyOf(t *testing.T) {
 	s4 := goxt.XString("a b c")
 	result4 := s4.FindLastAnyOf([]goxt.XString{"b", "c"}, 4)
 	assert.NotNil(t, result4)
-	assert.EqualValues(t, 4, result4.Index)
-	assert.EqualValues(t, "c", result4.Value)
+	if result4 != nil {
+		assert.EqualValues(t, 4, result4.Index)
+		assert.EqualValues(t, "c", result4.Value)
+	}
 }
