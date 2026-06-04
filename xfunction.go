@@ -6,3 +6,7 @@ func IfThen[T any](condition XBool, trueValue T, falseValue T) T {
 	}
 	return falseValue
 }
+
+func Run[R any](block func() R) R {
+	return block()
+}

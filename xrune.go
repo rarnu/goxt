@@ -7,6 +7,22 @@ const (
 	XRuneMaxValue = '\uFFFF'
 )
 
+func (r XRune) RangeToOpen(to XRune) XList[XRune] {
+	ret := make([]XRune, to-i)
+	for j := i; j < to; j++ {
+		ret[j-i] = j
+	}
+	return ret
+}
+
+func (r XRune) RangeToClose(to XRune) XList[XRune] {
+	ret := make([]XRune, to-i+1)
+	for j := i; j <= to; j++ {
+		ret[j-i] = j
+	}
+	return ret
+}
+
 func (r XRune) ToByte() XByte {
 	return XByte(r)
 }

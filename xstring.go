@@ -1009,9 +1009,8 @@ func (s XString) Lines() XList[XString] {
 	if len(parts) > 0 && parts[len(parts)-1] == "" {
 		parts = parts[:len(parts)-1]
 	}
-	return XList[string](parts).Map(func(it string) XString {
-		return XString(it)
-	})
+	lp := XList[string](parts)
+	return lp.Map(func(it string) XString { return XString(it) })
 }
 
 func (s XString) ToBoolean() XBool {
@@ -1359,11 +1358,11 @@ func (s XString) ToFloat64OrNil() *XFloat64 {
 	return new(XFloat64(v))
 }
 
-func (s XString) ToRuneArray() XRuneArray {
+func (s XString) ToRuneArray() XList[XRune] {
 	return []XRune(s)
 }
 
-func (s XString) ToRuneArrayWithRange(startIndex XInt, endIndex XInt) XRuneArray {
+func (s XString) ToRuneArrayWithRange(startIndex XInt, endIndex XInt) XList[XRune] {
 	if startIndex < 0 {
 		startIndex = 0
 	}
@@ -1378,7 +1377,7 @@ func (s XString) ToRuneArrayWithRange(startIndex XInt, endIndex XInt) XRuneArray
 	return runes[startIndex:endIndex]
 }
 
-func (s XString) ToByteArray() XByteArray {
+func (s XString) ToByteArray() XList[XByte] {
 	return []XByte(s)
 }
 
