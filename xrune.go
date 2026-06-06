@@ -8,17 +8,17 @@ const (
 )
 
 func (r XRune) RangeToOpen(to XRune) XList[XRune] {
-	ret := make([]XRune, to-i)
-	for j := i; j < to; j++ {
-		ret[j-i] = j
+	ret := make([]XRune, to-r)
+	for j := r; j < to; j++ {
+		ret[j-r] = j
 	}
 	return ret
 }
 
 func (r XRune) RangeToClose(to XRune) XList[XRune] {
-	ret := make([]XRune, to-i+1)
-	for j := i; j <= to; j++ {
-		ret[j-i] = j
+	ret := make([]XRune, to-r+1)
+	for j := r; j <= to; j++ {
+		ret[j-r] = j
 	}
 	return ret
 }

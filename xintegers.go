@@ -5,17 +5,6 @@ import (
 	"strconv"
 )
 
-//type XInt8 int8
-//type XInt16 int16
-//type XInt32 int32
-//type XInt64 int64
-//type XUint uint
-//type XUint8 uint8
-//type XUint16 uint16
-//type XUint32 uint32
-//type XUint64 uint64
-//type XByte byte
-
 func (i XInt) RangeToOpen(to XInt) XList[XInt] {
 	ret := make([]XInt, to-i)
 	for j := i; j < to; j++ {

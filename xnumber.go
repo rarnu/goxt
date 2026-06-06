@@ -2,6 +2,7 @@ package goxt
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type XInt int
@@ -37,7 +38,8 @@ type Complexes interface {
 }
 
 type Numbers interface {
-	Integers | UIntegers | Floats
+	// XXX 临时去掉 Floats 的约束
+	Integers | UIntegers /* | Floats */
 }
 
 type Number[T Numbers] interface {
@@ -55,23 +57,24 @@ type Number[T Numbers] interface {
 	ToUint() XUint
 	ToUint16() XUint16
 	ToUint8() XUint8
-	ToString() string
+	ToString() XString
 }
 
 var (
-	_ Number[XInt]     = (*XInt)(nil)
-	_ Number[XInt8]    = (*XInt8)(nil)
-	_ Number[XInt16]   = (*XInt16)(nil)
-	_ Number[XInt32]   = (*XInt32)(nil)
-	_ Number[XInt64]   = (*XInt64)(nil)
-	_ Number[XUint]    = (*XUint)(nil)
-	_ Number[XUint8]   = (*XUint8)(nil)
-	_ Number[XUint16]  = (*XUint16)(nil)
-	_ Number[XUint32]  = (*XUint32)(nil)
-	_ Number[XUint64]  = (*XUint64)(nil)
-	_ Number[XByte]    = (*XByte)(nil)
-	_ Number[XFloat32] = (*XFloat32)(nil)
-	_ Number[XFloat64] = (*XFloat64)(nil)
+	_ Number[XInt]    = (*XInt)(nil)
+	_ Number[XInt8]   = (*XInt8)(nil)
+	_ Number[XInt16]  = (*XInt16)(nil)
+	_ Number[XInt32]  = (*XInt32)(nil)
+	_ Number[XInt64]  = (*XInt64)(nil)
+	_ Number[XUint]   = (*XUint)(nil)
+	_ Number[XUint8]  = (*XUint8)(nil)
+	_ Number[XUint16] = (*XUint16)(nil)
+	_ Number[XUint32] = (*XUint32)(nil)
+	_ Number[XUint64] = (*XUint64)(nil)
+	_ Number[XByte]   = (*XByte)(nil)
+	// XXX 临时去掉 Floats 的约束
+	// _ Float[XFloat32] = (*XFloat32)(nil)
+	// _ Float[XFloat64] = (*XFloat64)(nil)
 )
 
 func (i XInt) ToFloat64() XFloat64 {
@@ -116,8 +119,8 @@ func (i XInt) ToUint16() XUint16 {
 func (i XInt) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XInt) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XInt) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XInt8) ToFloat64() XFloat64 {
@@ -165,8 +168,8 @@ func (i XInt8) ToUint16() XUint16 {
 func (i XInt8) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XInt8) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XInt8) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XInt16) ToFloat64() XFloat64 {
@@ -211,8 +214,8 @@ func (i XInt16) ToUint16() XUint16 {
 func (i XInt16) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XInt16) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XInt16) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XInt32) ToFloat64() XFloat64 {
@@ -257,8 +260,8 @@ func (i XInt32) ToUint16() XUint16 {
 func (i XInt32) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XInt32) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XInt32) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XInt64) ToFloat64() XFloat64 {
@@ -303,8 +306,8 @@ func (i XInt64) ToUint16() XUint16 {
 func (i XInt64) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XInt64) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XInt64) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XUint) ToFloat64() XFloat64 {
@@ -349,8 +352,8 @@ func (i XUint) ToUint16() XUint16 {
 func (i XUint) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XUint) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XUint) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 // ==================
@@ -397,8 +400,8 @@ func (i XUint8) ToUint16() XUint16 {
 func (i XUint8) ToUint8() XUint8 {
 	return i
 }
-func (i XUint8) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XUint8) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XUint16) ToFloat64() XFloat64 {
@@ -443,8 +446,8 @@ func (i XUint16) ToUint16() XUint16 {
 func (i XUint16) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XUint16) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XUint16) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XUint32) ToFloat64() XFloat64 {
@@ -489,8 +492,8 @@ func (i XUint32) ToUint16() XUint16 {
 func (i XUint32) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XUint32) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XUint32) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (i XUint64) ToFloat64() XFloat64 {
@@ -535,8 +538,8 @@ func (i XUint64) ToUint16() XUint16 {
 func (i XUint64) ToUint8() XUint8 {
 	return XUint8(i)
 }
-func (i XUint64) ToString() string {
-	return fmt.Sprintf("%d", i)
+func (i XUint64) ToString() XString {
+	return XString(fmt.Sprintf("%d", i))
 }
 
 func (b XByte) ToFloat64() XFloat64 {
@@ -581,8 +584,8 @@ func (b XByte) ToUint16() XUint16 {
 func (b XByte) ToUint8() XUint8 {
 	return XUint8(b)
 }
-func (b XByte) ToString() string {
-	return fmt.Sprintf("%d", b)
+func (b XByte) ToString() XString {
+	return XString(fmt.Sprintf("%d", b))
 }
 
 func (f XFloat32) ToFloat64() XFloat64 {
@@ -627,8 +630,8 @@ func (f XFloat32) ToUint16() XUint16 {
 func (f XFloat32) ToUint8() XUint8 {
 	return XUint8(f)
 }
-func (f XFloat32) ToString() string {
-	return fmt.Sprintf("%f", f)
+func (f XFloat32) ToString() XString {
+	return XString(strconv.FormatFloat(float64(f), 'f', -1, 32))
 }
 
 func (f XFloat64) ToFloat64() XFloat64 {
@@ -673,6 +676,6 @@ func (f XFloat64) ToUint16() XUint16 {
 func (f XFloat64) ToUint8() XUint8 {
 	return XUint8(f)
 }
-func (f XFloat64) ToString() string {
-	return fmt.Sprintf("%f", f)
+func (f XFloat64) ToString() XString {
+	return XString(strconv.FormatFloat(float64(f), 'f', -1, 64))
 }

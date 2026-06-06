@@ -913,7 +913,8 @@ func (s XString) ContainsRegex(pattern XString) XBool {
 
 func (s XString) Matches(pattern XString) XBool {
 	re := regexp.MustCompile(string(pattern))
-	return XBool(re.MatchString(string(s)) && XString(re.FindString(string(s))) == s)
+	matches := re.MatchString(string(s)) && XString(re.FindString(string(s))) == s
+	return XBool(matches)
 }
 
 func (s XString) ReplaceRegex(pattern XString, replacement XString) XString {
@@ -1433,12 +1434,19 @@ func (s XString) runeIndexToByteIndex(runeIndex XInt) XInt {
 	if runeIndex <= 0 {
 		return 0
 	}
-	if runeIndex >= s.RuneCount() {
+	runeCount := s.RuneCount()
+	if runeCount == 0 {
+		return 0
+	}
+	if runeIndex >= runeCount {
 		return XInt(len(s))
 	}
 	byteIndex := 0
 	for i := XInt(0); i < runeIndex; i++ {
 		_, size := utf8.DecodeRuneInString(string(s[byteIndex:]))
+		if size == 0 {
+			break
+		}
 		byteIndex += size
 	}
 	return XInt(byteIndex)
@@ -1448,12 +1456,22 @@ func (s XString) byteIndexToRuneIndex(byteIndex XInt) XInt {
 	if byteIndex <= 0 {
 		return 0
 	}
-	if byteIndex >= XInt(len(s)) {
+	strLen := XInt(len(s))
+	if strLen == 0 {
+		return 0
+	}
+	if byteIndex >= strLen {
 		return s.RuneCount()
 	}
 	runeIndex := 0
 	for i := 0; i < int(byteIndex); {
+		if i >= len(s) {
+			break
+		}
 		_, size := utf8.DecodeRuneInString(string(s[i:]))
+		if size == 0 {
+			break
+		}
 		i += size
 		runeIndex++
 	}
