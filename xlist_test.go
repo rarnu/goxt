@@ -70,12 +70,12 @@ func TestNewXListWithInit(t *testing.T) {
 	})
 
 	t.Run("初始化字符串列表", func(t *testing.T) {
-		list := goxt.NewXListWithInit(3, func(i goxt.XInt) string {
+		list := goxt.NewXListWithInit(3, func(i goxt.XInt) goxt.XString {
 			return "item" + i.ToString()
 		})
 		assert.Equal(t, goxt.XInt(3), list.Size())
-		assert.Equal(t, "item0", list[0])
-		assert.Equal(t, "item2", list[2])
+		assert.EqualValues(t, "item0", list[0])
+		assert.EqualValues(t, "item2", list[2])
 	})
 }
 

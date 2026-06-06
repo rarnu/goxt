@@ -1,5 +1,10 @@
 package goxt
 
+import (
+	"math/rand"
+	"time"
+)
+
 type XList[T comparable] []T
 
 func NewXList[T comparable]() XList[T] {
@@ -138,10 +143,11 @@ func (l *XList[T]) Insert(index XInt, element T) XBool {
 	if index < 0 || index > list.Size() {
 		return false
 	}
-	*l = append(list, element)
-	newList := *l
-	copy(newList[index+1:], newList[index:len(newList)-1])
-	newList[index] = element
+	newList := make([]T, 0, len(list)+1)
+	newList = append(newList, list[:index]...)
+	newList = append(newList, element)
+	newList = append(newList, list[index:]...)
+	*l = newList
 	return true
 }
 func (l *XList[T]) RemoveAt(index XInt) *T {
@@ -259,13 +265,57 @@ func (l *XList[T]) IfEmpty(defaultValue func() XList[T]) XList[T] {
 	return *l
 }
 
+func (l *XList[T]) RemoveAllWithPredicate(predicate func(element T) XBool) XBool {
+	result := false
+	newItems := make([]T, 0, len(*l))
+	for _, elem := range *l {
+		if !predicate(elem) {
+			newItems = append(newItems, elem)
+			result = true
+		}
+	}
+	*l = newItems
+	return XBool(result)
+}
+func (l *XList[T]) RetainAllWithPredicate(predicate func(element T) XBool) XBool {
+	result := false
+	newItems := make([]T, 0, len(*l))
+	for _, elem := range *l {
+		if predicate(elem) {
+			newItems = append(newItems, elem)
+			result = true
+		}
+	}
+	*l = newItems
+	return XBool(result)
+}
 
-/*
-public fun <T> Iterable<T>.shuffled(random: Random): List<T>
+func (l *XList[T]) Reversed() XList[T] {
+	n := len(*l)
+	reversed := make([]T, n)
+	for i, elem := range *l {
+		reversed[n-1-i] = elem
+	}
+	return reversed
+}
 
-public fun <T> Iterable<Iterable<T>>.flatten(): List<T>
+func (l *XList[T]) Shuffled() XList[T] {
+	n := len(*l)
+	if n <= 1 {
+		// 长度 0 或 1 时无需打乱，直接返回副本
+		shuffled := make([]T, n)
+		copy(shuffled, *l)
+		return shuffled
+	}
 
-public fun <T, R> Iterable<Pair<T, R>>.unzip(): Pair<List<T>, List<R>>
- */
+	// 创建新切片并复制原数据
+	shuffled := make([]T, n)
+	copy(shuffled, *l)
 
-
+	// 使用当前时间作为随机种子
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+	rng.Shuffle(n, func(i, j int) {
+		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+	})
+	return shuffled
+}
