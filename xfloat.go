@@ -18,6 +18,7 @@ func (f XFloat64) IsInfinite() XBool {
 	return XBool(math.IsInf(float64(f), 0))
 }
 
+
 func (f XFloat32) Pow[T Numbers](x T) XFloat64  {
 	return XFloat64(math.Pow(float64(f), float64(x)))
 }

@@ -2,7 +2,6 @@ package goxt
 
 import (
 	"fmt"
-	"log"
 	"math"
 	"regexp"
 	"strconv"
@@ -268,53 +267,35 @@ func ParseTime(timeStr XString) time.Time {
 	if yRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtY), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if yyyyMmDdRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYYYYMMdd), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if ymRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYM), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if ymdRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYMd), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if ymdHRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYMdH), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if ymdHmRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYMdHm), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if ymdHmsRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYMdHms), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
 	} else if ymdHmsSRegex.MatchString(string(timeStr)) {
 		if times, err := time.Parse(string(FmtYMdHmsSSS), string(timeStr)); err == nil {
 			return times
-		} else {
-			log.Printf("解析时间错误, err: %v", err)
 		}
-	} else {
-		log.Printf("解析时间错误, time: %v", timeStr)
 	}
 	return EmptyTime
 }

@@ -1,53 +1,77 @@
 package goxt
 
-type XSet[T comparable] map[T]bool
+type XSet[T Equalable[T]] []T
 
-func NewXSet[T comparable]() XSet[T] {
+func NewXSet[T Equalable[T]]() XSet[T] {
 	return XSet[T]{}
 }
 
-func NewXSetWithSize[T comparable](size XInt) XSet[T] {
-	return make(XSet[T], size)
+func NewXSetWithSize[T Equalable[T]](size XInt) XSet[T] {
+	return make(XSet[T], 0, size)
 }
 
-func NewXSetWithElements[T comparable](elements ...T) XSet[T] {
-	ret := make(XSet[T], len(elements))
+func NewXSetWithElements[T Equalable[T]](elements ...T) XSet[T] {
+	ret := make(XSet[T], 0, len(elements))
 	for _, item := range elements {
-		ret[item] = true
+		if !ret.Contains(item) {
+			ret.Add(item)
+		}
 	}
 	return ret
 }
 
-func NewXSetWithInit[T comparable](size XInt, init func(XInt) T) XSet[T] {
-	ret := make(XSet[T], size)
+func NewXSetWithInit[T Equalable[T]](size XInt, init func(XInt) T) XSet[T] {
+	ret := make(XSet[T], 0, size)
 	for i := 0; i < int(size); i++ {
-		ret[init(XInt(i))] = true
+		item := init(XInt(i))
+		if !ret.Contains(item) {
+			ret.Add(item)
+		}
 	}
 	return ret
 }
 
-func EmptyXSet[T comparable]() XSet[T] {
-	return make(XSet[T])
+func EmptyXSet[T Equalable[T]]() XSet[T] {
+	return make(XSet[T], 0)
 }
 
-func (s *XSet[T]) Size() XInt {
-	return XInt(len(*s))
+func (s XSet[T]) Equal(other XSet[T]) XBool {
+	if len(s) != len(other) {
+		return false
+	}
+	for _, key := range other {
+		if !s.Contains(key) {
+			return false
+		}
+	}
+	return true
 }
 
-func (s *XSet[T]) IsEmpty() XBool {
+func (s XSet[T]) Size() XInt {
+	return XInt(len(s))
+}
+
+func (s XSet[T]) IsEmpty() XBool {
 	return s.Size() == 0
 }
 
-func (s *XSet[T]) IsNotEmpty() XBool {
+func (s XSet[T]) IsNotEmpty() XBool {
 	return s.Size() != 0
 }
 
-func (s *XSet[T]) Contains(element T) XBool {
-	_, ok := (*s)[element]
-	return XBool(ok)
+func (s XSet[T]) Contains(element T) XBool {
+	if s == nil || len(s) == 0 {
+		return false
+	}
+	for _, item := range s {
+		if item.Equal(element) {
+			return true
+		}
+	}
+	return false
 }
 
-func (s *XSet[T]) ContainsAll(elements XList[T]) XBool {
+func (s XSet[T]) ContainsAll(elements XList[T]) XBool {
 	for _, item := range elements {
 		if !s.Contains(item) {
 			return false
@@ -57,81 +81,82 @@ func (s *XSet[T]) ContainsAll(elements XList[T]) XBool {
 }
 
 func (s *XSet[T]) Add(element T) XBool {
-	(*s)[element] = true
-	return true
+	if !s.Contains(element) {
+		*s = append(*s, element)
+		return true
+	}
+	return false
 }
 
 func (s *XSet[T]) Remove(element T) XBool {
-	if _, ok := (*s)[element]; ok {
-		delete(*s, element)
-		return true
+	for i, item := range *s {
+		if item.Equal(element) {
+			*s = append((*s)[:i], (*s)[i+1:]...)
+			return true
+		}
 	}
 	return false
 }
 
 func (s *XSet[T]) AddAll(elements XList[T]) XBool {
+	hasError := false
 	for _, item := range elements {
-		(*s)[item] = true
+		if !s.Add(item) {
+			hasError = true
+		}
 	}
-	return true
+	return !XBool(hasError)
 }
 
 func (s *XSet[T]) RemoveAll(elements XList[T]) XBool {
+	hasError := false
 	for _, item := range elements {
-		if _, ok := (*s)[item]; ok {
-			delete(*s, item)
+		if !s.Remove(item) {
+			hasError = true
 		}
 	}
-	return true
+	return !XBool(hasError)
 }
 
 func (s *XSet[T]) RetainAll(elements XList[T]) XBool {
-	if s == nil || len(*s) == 0 {
+	if s.IsEmpty() {
 		return false
 	}
-	if elements == nil || len(elements) == 0 {
-		// 清空当前集合，因为没有任何元素需要保留
-		*s = make(XSet[T])
-		return true
-	}
-	// 创建一个临时集合来存储需要保留的元素（去重）
-	retainSet := make(XSet[T])
-	for _, elem := range elements {
-		retainSet[elem] = true
-	}
-	// 记录是否有变化
-	changed := false
-	// 遍历当前集合，删除不在 retainSet 中的元素
-	for key := range *s {
-		if _, exists := retainSet[key]; !exists {
-			delete(*s, key)
-			changed = true
+	ret := make(XSet[T], 0, len(elements))
+	for _, v := range *s {
+		if elements.Contains(v) {
+			if !ret.Contains(v) {
+				ret.Add(v)
+			}
 		}
 	}
-	if changed {
-		return true
+	if ret.Equal(*s) {
+		return false
 	}
-	return false
+	*s = ret
+	return true
 }
 
 func (s *XSet[T]) Clear() {
 	*s = EmptyXSet[T]()
 }
 
-func (s *XSet[T]) IfEmpty(defaultValue func() XSet[T]) XSet[T] {
+func (s XSet[T]) IfEmpty(defaultValue func() XSet[T]) XSet[T] {
 	if s.IsEmpty() {
 		return defaultValue()
 	}
-	return *s
+	return s
 }
 
 func (s *XSet[T]) RemoveAllWithPredicate(predicate func(element T) XBool) XBool {
 	result := false
-	newItems := make(XSet[T], len(*s))
-	for elem := range *s {
+	newItems := make(XSet[T], 0, len(*s))
+	for _, elem := range *s {
 		if !predicate(elem) {
-			newItems[elem] = true
-			result = true
+			if !newItems.Contains(elem) {
+				newItems.Add(elem)
+				result = true
+			}
 		}
 	}
 	*s = newItems
@@ -139,11 +164,13 @@ func (s *XSet[T]) RemoveAllWithPredicate(predicate func(element T) XBool) XBool 
 }
 func (s *XSet[T]) RetainAllWithPredicate(predicate func(element T) XBool) XBool {
 	result := false
-	newItems := make(XSet[T], len(*s))
-	for elem := range *s {
+	newItems := make(XSet[T], 0, len(*s))
+	for _, elem := range *s {
 		if predicate(elem) {
-			newItems[elem] = true
-			result = true
+			if !newItems.Contains(elem) {
+				newItems.Add(elem)
+				result = true
+			}
 		}
 	}
 	*s = newItems

@@ -77,6 +77,10 @@ var (
 	// _ Float[XFloat64] = (*XFloat64)(nil)
 )
 
+func (i XInt) Equal(other XInt) XBool {
+	return i == other
+}
+
 func (i XInt) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -123,6 +127,9 @@ func (i XInt) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XInt8) Equal(other XInt8) XBool {
+	return i == other
+}
 func (i XInt8) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -172,6 +179,9 @@ func (i XInt8) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XInt16) Equal(other XInt16) XBool {
+	return i == other
+}
 func (i XInt16) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -218,6 +228,9 @@ func (i XInt16) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XInt32) Equal(other XInt32) XBool {
+	return i == other
+}
 func (i XInt32) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -264,6 +277,9 @@ func (i XInt32) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XInt64) Equal(other XInt64) XBool {
+	return i == other
+}
 func (i XInt64) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -310,6 +326,9 @@ func (i XInt64) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XUint) Equal(other XUint) XBool {
+	return i == other
+}
 func (i XUint) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -356,8 +375,9 @@ func (i XUint) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
-// ==================
-
+func (i XUint8) Equal(other XUint8) XBool {
+	return i == other
+}
 func (i XUint8) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -404,6 +424,9 @@ func (i XUint8) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XUint16) Equal(other XUint16) XBool {
+	return i == other
+}
 func (i XUint16) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -450,6 +473,9 @@ func (i XUint16) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XUint32) Equal(other XUint32) XBool {
+	return i == other
+}
 func (i XUint32) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -496,6 +522,9 @@ func (i XUint32) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (i XUint64) Equal(other XUint64) XBool {
+	return i == other
+}
 func (i XUint64) ToFloat64() XFloat64 {
 	return XFloat64(i)
 }
@@ -542,6 +571,9 @@ func (i XUint64) ToString() XString {
 	return XString(fmt.Sprintf("%d", i))
 }
 
+func (b XByte) Equal(other XByte) XBool {
+	return b == other
+}
 func (b XByte) ToFloat64() XFloat64 {
 	return XFloat64(b)
 }
@@ -588,6 +620,9 @@ func (b XByte) ToString() XString {
 	return XString(fmt.Sprintf("%d", b))
 }
 
+func (f XFloat32) Equal(other XFloat32) XBool {
+	return f == other
+}
 func (f XFloat32) ToFloat64() XFloat64 {
 	return XFloat64(f)
 }
@@ -634,6 +669,9 @@ func (f XFloat32) ToString() XString {
 	return XString(strconv.FormatFloat(float64(f), 'f', -1, 32))
 }
 
+func (f XFloat64) Equal(other XFloat64) XBool {
+	return f == other
+}
 func (f XFloat64) ToFloat64() XFloat64 {
 	return f
 }

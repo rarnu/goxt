@@ -1,25 +1,27 @@
 package goxt
 
 import (
+	"cmp"
 	"math/rand"
+	"slices"
 	"time"
 )
 
-type XList[T comparable] []T
+type XList[T Equalable[T]] []T
 
-func NewXList[T comparable]() XList[T] {
+func NewXList[T Equalable[T]]() XList[T] {
 	return XList[T]{}
 }
 
-func NewXListWithSize[T comparable](size XInt) XList[T] {
-	return make(XList[T], size)
+func NewXListWithSize[T Equalable[T]](size XInt) XList[T] {
+	return make(XList[T], 0, size)
 }
 
-func NewXListWithElements[T comparable](elements ...T) XList[T] {
+func NewXListWithElements[T Equalable[T]](elements ...T) XList[T] {
 	return elements
 }
 
-func NewXListWithInit[T comparable](size XInt, init func(XInt) T) XList[T] {
+func NewXListWithInit[T Equalable[T]](size XInt, init func(XInt) T) XList[T] {
 	ret := make(XList[T], size)
 	for i := 0; i < int(size); i++ {
 		ret[i] = init(XInt(i))
@@ -27,32 +29,44 @@ func NewXListWithInit[T comparable](size XInt, init func(XInt) T) XList[T] {
 	return ret
 }
 
-func EmptyXList[T comparable]() XList[T] {
+func EmptyXList[T Equalable[T]]() XList[T] {
 	return make(XList[T], 0)
 }
 
-func (l *XList[T]) Size() XInt {
-	return XInt(len(*l))
+func (l XList[T]) Equal(other XList[T]) XBool {
+	if len(l) != len(other) {
+		return false
+	}
+	for i := range l {
+		if !l[i].Equal(other[i]) {
+			return false
+		}
+	}
+	return true
 }
 
-func (l *XList[T]) IsEmpty() XBool {
+func (l XList[T]) Size() XInt {
+	return XInt(len(l))
+}
+
+func (l XList[T]) IsEmpty() XBool {
 	return l.Size() == 0
 }
 
-func (l *XList[T]) IsNotEmpty() XBool {
+func (l XList[T]) IsNotEmpty() XBool {
 	return l.Size() != 0
 }
 
-func (l *XList[T]) Contains(element T) XBool {
-	for _, item := range *l {
-		if item == element {
+func (l XList[T]) Contains(element T) XBool {
+	for _, item := range l {
+		if item.Equal(element) {
 			return true
 		}
 	}
 	return false
 }
 
-func (l *XList[T]) ContainsAll(elements XList[T]) XBool {
+func (l XList[T]) ContainsAll(elements XList[T]) XBool {
 	for _, item := range elements {
 		if !l.Contains(item) {
 			return false
@@ -68,7 +82,7 @@ func (l *XList[T]) Add(element T) XBool {
 
 func (l *XList[T]) Remove(element T) XBool {
 	for i, item := range *l {
-		if item == element {
+		if item.Equal(element) {
 			*l = append((*l)[:i], (*l)[i+1:]...)
 			return true
 		}
@@ -82,13 +96,9 @@ func (l *XList[T]) AddAll(elements XList[T]) XBool {
 }
 
 func (l *XList[T]) RemoveAll(elements XList[T]) XBool {
-	removeMap := make(map[T]bool)
-	for _, v := range elements {
-		removeMap[v] = true
-	}
 	result := make([]T, 0, len(*l))
 	for _, v := range *l {
-		if !removeMap[v] {
+		if !elements.Contains(v) {
 			result = append(result, v)
 		}
 	}
@@ -97,19 +107,14 @@ func (l *XList[T]) RemoveAll(elements XList[T]) XBool {
 }
 
 func (l *XList[T]) RetainAll(elements XList[T]) XBool {
-	retainMap := make(map[T]bool)
-	for _, v := range elements {
-		retainMap[v] = true
-	}
 	n := 0
 	for _, v := range *l {
-		if retainMap[v] {
+		if elements.Contains(v) {
 			(*l)[n] = v
 			n++
 		}
 	}
-	result := (*l)[:n]
-	*l = result
+	*l = (*l)[:n]
 	return true
 }
 
@@ -117,25 +122,25 @@ func (l *XList[T]) Clear() {
 	*l = EmptyXList[T]()
 }
 
-func (l *XList[T]) IndexOf(element T) XInt {
-	for i, item := range *l {
-		if item == element {
+func (l XList[T]) IndexOf(element T) XInt {
+	for i, item := range l {
+		if item.Equal(element) {
 			return XInt(i)
 		}
 	}
 	return -1
 }
-func (l *XList[T]) LastIndexOf(element T) XInt {
+func (l XList[T]) LastIndexOf(element T) XInt {
 	for i := l.Size() - 1; i >= 0; i-- {
-		if (*l)[i] == element {
+		if l[i].Equal(element) {
 			return i
 		}
 	}
 	return -1
 }
 
-func (l *XList[T]) SubList(fromIndex XInt, toIndex XInt) XList[T] {
-	return (*l)[fromIndex:toIndex]
+func (l XList[T]) SubList(fromIndex XInt, toIndex XInt) XList[T] {
+	return l[fromIndex:toIndex]
 }
 
 func (l *XList[T]) Insert(index XInt, element T) XBool {
@@ -160,32 +165,32 @@ func (l *XList[T]) RemoveAt(index XInt) *T {
 	return new(removed)
 }
 
-func (l *XList[T]) First() T {
+func (l XList[T]) First() T {
 	if l.IsEmpty() {
 		panic("List is empty.")
 	}
-	return (*l)[0]
+	return l[0]
 }
 
-func (l *XList[T]) FirstOrNull() *T {
+func (l XList[T]) FirstOrNull() *T {
 	if l.IsEmpty() {
 		return nil
 	}
-	return &(*l)[0]
+	return &l[0]
 }
 
-func (l *XList[T]) Last() T {
+func (l XList[T]) Last() T {
 	if l.IsEmpty() {
 		panic("List is empty.")
 	}
-	return (*l)[l.Size()-1]
+	return l[l.Size()-1]
 }
 
-func (l *XList[T]) LastOrNull() *T {
+func (l XList[T]) LastOrNull() *T {
 	if l.IsEmpty() {
 		return nil
 	}
-	return &(*l)[l.Size()-1]
+	return &l[l.Size()-1]
 }
 
 func (l *XList[T]) AddFirst(element T) {
@@ -248,21 +253,21 @@ func (l *XList[T]) RemoveRange(fromIndex XInt, toIndex XInt) {
 	*l = append(list[:fromIndex], list[toIndex:]...)
 }
 
-func (l *XList[T]) LastIndex() XInt {
+func (l XList[T]) LastIndex() XInt {
 	return l.Size() - 1
 }
 
-func (l *XList[T]) ForEach(operation func(T)) {
-	for _, item := range *l {
+func (l XList[T]) ForEach(operation func(T)) {
+	for _, item := range l {
 		operation(item)
 	}
 }
 
-func (l *XList[T]) IfEmpty(defaultValue func() XList[T]) XList[T] {
+func (l XList[T]) IfEmpty(defaultValue func() XList[T]) XList[T] {
 	if l.IsEmpty() {
 		return defaultValue()
 	}
-	return *l
+	return l
 }
 
 func (l *XList[T]) RemoveAllWithPredicate(predicate func(element T) XBool) XBool {
@@ -290,27 +295,32 @@ func (l *XList[T]) RetainAllWithPredicate(predicate func(element T) XBool) XBool
 	return XBool(result)
 }
 
-func (l *XList[T]) Reversed() XList[T] {
-	n := len(*l)
-	reversed := make([]T, n)
-	for i, elem := range *l {
+func (l XList[T]) Reversed() XList[T] {
+	n := len(l)
+	reversed := make([]T, 0, n)
+	for i, elem := range l {
 		reversed[n-1-i] = elem
 	}
 	return reversed
 }
 
-func (l *XList[T]) Shuffled() XList[T] {
-	n := len(*l)
+func (l *XList[T]) Reverse() {
+	newList := l.Reversed()
+	*l = newList
+}
+
+func (l XList[T]) Shuffled() XList[T] {
+	n := len(l)
 	if n <= 1 {
 		// 长度 0 或 1 时无需打乱，直接返回副本
-		shuffled := make([]T, n)
-		copy(shuffled, *l)
+		shuffled := make([]T, 0, n)
+		copy(shuffled, l)
 		return shuffled
 	}
 
 	// 创建新切片并复制原数据
-	shuffled := make([]T, n)
-	copy(shuffled, *l)
+	shuffled := make([]T, 0, n)
+	copy(shuffled, l)
 
 	// 使用当前时间作为随机种子
 	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -318,4 +328,54 @@ func (l *XList[T]) Shuffled() XList[T] {
 		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
 	})
 	return shuffled
+}
+
+func (l *XList[T]) Shuffle() {
+	newList := l.Shuffled()
+	*l = newList
+}
+
+func (l XList[T]) SortedWith(comparator func(a, b T) XInt) XList[T] {
+	src := l
+	newList := make(XList[T], 0, len(src))
+	copy(newList, src)
+	slices.SortStableFunc(newList, func(a, b T) int {
+		return int(comparator(a, b))
+	})
+	return newList
+}
+
+func (l *XList[T]) SortWith(comparator func(a, b T) XInt) {
+	newList := l.SortedWith(comparator)
+	*l = newList
+}
+
+func (l XList[T]) SortedBy[R cmp.Ordered](selector func(T) R) XList[T] {
+	src := l
+	newList := make(XList[T], 0, len(src))
+	copy(newList, src)
+	slices.SortFunc(newList, func(a, b T) int {
+		return cmp.Compare(selector(a), selector(b))
+	})
+	return newList
+}
+
+func (l *XList[T]) SortBy[R cmp.Ordered](selector func(T) R) {
+	newList := l.SortedBy(selector)
+	*l = newList
+}
+
+func (l XList[T]) SortedByDescending[R cmp.Ordered](selector func(T) R) XList[T] {
+	src := l
+	newList := make(XList[T], 0, len(src))
+	copy(newList, src)
+	slices.SortFunc(newList, func(a, b T) int {
+		return cmp.Compare(selector(b), selector(a))
+	})
+	return newList
+}
+
+func (l *XList[T]) SortByDescending[R cmp.Ordered](selector func(T) R) {
+	newList := l.SortedByDescending(selector)
+	*l = newList
 }

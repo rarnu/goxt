@@ -1,5 +1,20 @@
 package goxt
 
+type Equalable[T any] interface {
+	Equal(other T) XBool
+}
+
+type Comparable[T any] interface {
+	comparable
+	Equalable[T]
+}
+
+type Nothing struct{}
+
+func (n Nothing) Equal(_ Nothing) XBool {
+	return true
+}
+
 type XAny[T any] struct {
 	Value T
 }

@@ -1,8 +1,6 @@
 package goxt
 
-import "go/types"
-
-type Collection[T comparable] interface {
+type Collection[T Equalable[T]] interface {
 	Size() XInt
 	IsEmpty() XBool
 	IsNotEmpty() XBool
@@ -18,7 +16,7 @@ type Collection[T comparable] interface {
 	RetainAllWithPredicate(predicate func(element T) XBool) XBool
 }
 
-type List[T comparable] interface {
+type List[T Equalable[T]] interface {
 	Collection[T]
 	IndexOf(element T) XInt
 	LastIndexOf(element T) XInt
@@ -27,11 +25,11 @@ type List[T comparable] interface {
 	SubList(fromIndex XInt, toIndex XInt) XList[T]
 }
 
-type Set[T comparable] interface {
+type Set[T Equalable[T]] interface {
 	Collection[T]
 }
 
-type Map[K comparable, V comparable] interface {
+type Map[K Comparable[K], V Equalable[V]] interface {
 	Size() XInt
 	IsEmpty() XBool
 	IsNotEmpty() XBool
@@ -39,20 +37,21 @@ type Map[K comparable, V comparable] interface {
 	ContainsValue(value V) XBool
 	Keys() XSet[K]
 	Values() XList[V]
-	Entries() XSet[XPair[K, V]]
+	Entries() XSet[XMapEntry[K, V]]
 	Remove(key K) *V
 	PutAll(from XMap[K, V])
+	RemoveAll(keys XSet[K])
 	Clear()
 }
 
 var (
 	// XLIST
-	_ Collection[types.Nil] = (*XList[types.Nil])(nil)
-	_ List[types.Nil]       = (*XList[types.Nil])(nil)
+	_ Collection[Nothing] = (*XList[Nothing])(nil)
+	_ List[Nothing]       = (*XList[Nothing])(nil)
 
 	// XSET
-	_ Collection[types.Nil] = (*XSet[types.Nil])(nil)
-	_ Set[types.Nil]        = (*XSet[types.Nil])(nil)
+	_ Collection[Nothing] = (*XSet[Nothing])(nil)
+	_ Set[Nothing]        = (*XSet[Nothing])(nil)
 
-	_ Map[types.Nil, types.Nil] = (*XMap[types.Nil, types.Nil])(nil)
+	_ Map[Nothing, Nothing] = (*XMap[Nothing, Nothing])(nil)
 )

@@ -16,6 +16,10 @@ var (
 
 type XString string
 
+func (s XString) Equal(other XString) XBool {
+	return s == other
+}
+
 func (s XString) Length() XInt {
 	return XInt(len(s))
 }
@@ -40,7 +44,6 @@ func (s XString) Capitalize() XString {
 }
 
 func (s XString) Decapitalize() XString {
-	// TODO "replaceFirstChar { it.lowercase() }"
 	if s.RuneCount() == 0 {
 		return ""
 	}
@@ -1010,8 +1013,11 @@ func (s XString) Lines() XList[XString] {
 	if len(parts) > 0 && parts[len(parts)-1] == "" {
 		parts = parts[:len(parts)-1]
 	}
-	lp := XList[string](parts)
-	return lp.Map(func(it string) XString { return XString(it) })
+	ret := make(XList[XString], len(parts))
+	for i, part := range parts {
+		ret[i] = XString(part)
+	}
+	return ret
 }
 
 func (s XString) ToBoolean() XBool {

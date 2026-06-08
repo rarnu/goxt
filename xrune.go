@@ -23,6 +23,10 @@ func (r XRune) RangeToClose(to XRune) XList[XRune] {
 	return ret
 }
 
+func (r XRune) Equal(other XRune) XBool {
+	return r == other
+}
+
 func (r XRune) ToByte() XByte {
 	return XByte(r)
 }
@@ -86,7 +90,3 @@ func Char(code XInt) XRune {
 func (r XRune) Code() XInt {
 	return XInt(r)
 }
-
-// public expect fun CharArray.concatToString(): String
-
-// public expect fun CharArray.concatToString(startIndex: Int = 0, endIndex: Int = this.size): String
