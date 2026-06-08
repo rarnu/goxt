@@ -2,25 +2,25 @@ package goxt
 
 import "fmt"
 
-type XPair[A comparable, B comparable] struct {
+type XPair[A Equalable[A], B Equalable[B]] struct {
 	First  A
 	Second B
 }
 
-type XTriple[A comparable, B comparable, C comparable] struct {
+type XTriple[A Equalable[A], B Equalable[B], C Equalable[C]] struct {
 	First  A
 	Second B
 	Third  C
 }
 
-func NewPair[A comparable, B comparable](first A, second B) XPair[A, B] {
+func NewPair[A Equalable[A], B Equalable[B]](first A, second B) XPair[A, B] {
 	return XPair[A, B]{
 		First:  first,
 		Second: second,
 	}
 }
 
-func NewTriple[A comparable, B comparable, C comparable](first A, second B, third C) XTriple[A, B, C] {
+func NewTriple[A Equalable[A], B Equalable[B], C Equalable[C]](first A, second B, third C) XTriple[A, B, C] {
 	return XTriple[A, B, C]{
 		First:  first,
 		Second: second,
@@ -29,11 +29,11 @@ func NewTriple[A comparable, B comparable, C comparable](first A, second B, thir
 }
 
 func (p XPair[A, B]) Equal(other XPair[A, B]) XBool {
-	return p.First == other.First && p.Second == other.Second
+	return p.First.Equal(other.First) && p.Second.Equal(other.Second)
 }
 
 func (t XTriple[A, B, C]) Equal(other XTriple[A, B, C]) XBool {
-	return t.First == other.First && t.Second == other.Second && t.Third == other.Third
+	return t.First.Equal(other.First) && t.Second.Equal(other.Second) && t.Third.Equal(other.Third)
 }
 
 func (p XPair[A, B]) String() string {

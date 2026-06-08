@@ -73,3 +73,11 @@ func (m XMap[K, V]) FilterNot(predicate func(XMapEntry[K, V]) XBool) XMap[K, V] 
 	dest := make(XMap[K, V], len(m))
 	return m.FilterNotTo(dest, predicate)
 }
+
+func (m XMap[K, V]) ToList() XList[XMapEntry[K, V]] {
+	ret := make(XList[XMapEntry[K, V]], m.Size())
+	for _, entry := range m.Entries() {
+		ret.Add(entry)
+	}
+	return ret
+}

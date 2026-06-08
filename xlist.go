@@ -263,6 +263,12 @@ func (l XList[T]) ForEach(operation func(T)) {
 	}
 }
 
+func (l XList[T]) ForEachIndexed(operation func(XInt, T)) {
+	for index, item := range l {
+		operation(XInt(index), item)
+	}
+}
+
 func (l XList[T]) IfEmpty(defaultValue func() XList[T]) XList[T] {
 	if l.IsEmpty() {
 		return defaultValue()

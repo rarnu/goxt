@@ -1,6 +1,7 @@
 package goxt_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -921,4 +922,35 @@ func TestIfEmpty(t *testing.T) {
 		})
 		assert.Equal(t, XInt(0), result.Size())
 	})
+}
+
+func TestXList_JoinToString(t *testing.T) {
+	t.Run("列表为空返回空字符串", func(t *testing.T) {
+		list := NewXList[XInt]()
+		result := list.JoinToStringWithAllDefault(",")
+		assert.Equal(t, XString(""), result)
+	})
+	t.Run("列表不为空返回字符串", func(t *testing.T) {
+		list := NewXListWithElements[XInt](1, 2, 3)
+		result := list.JoinToStringWithAllDefault(",")
+		assert.Equal(t, XString("1,2,3"), result)
+	})
+	t.Run("列表为空返回默认值", func(t *testing.T) {
+		list := NewXList[XInt]()
+		result := list.JoinToStringWithDefaultTransform(",", "default", "")
+		assert.Equal(t, XString("default"), result)
+	})
+	t.Run("列表不为空返回字符串", func(t *testing.T) {
+		list := NewXListWithElements[XInt](1, 2, 3)
+		result := list.JoinToStringWithDefaultTransform(",", "default", "")
+		assert.Equal(t, XString("default1,2,3"), result)
+	})
+	t.Run("列表不为空返回转换字符串", func(t *testing.T) {
+		list := NewXListWithElements[XInt](1, 2, 3)
+		result := list.JoinToString(",", "{", "}", func(item XInt) XString {
+			return XString(fmt.Sprintf("item %d", item))
+		})
+		assert.Equal(t, XString("{item 1,item 2,item 3}"), result)
+	})
+
 }

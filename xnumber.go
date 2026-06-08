@@ -21,27 +21,6 @@ type XFloat64 float64
 type XComplex64 complex64
 type XComplex128 complex128
 
-type Integers interface {
-	XInt | XInt8 | XInt16 | XInt32 | XInt64
-}
-
-type UIntegers interface {
-	XByte | XUint | XUint8 | XUint16 | XUint32 | XUint64
-}
-
-type Floats interface {
-	XFloat32 | XFloat64
-}
-
-type Complexes interface {
-	XComplex64 | XComplex128
-}
-
-type Numbers interface {
-	// XXX 临时去掉 Floats 的约束
-	Integers | UIntegers /* | Floats */
-}
-
 type Number[T Numbers] interface {
 	ToFloat64() XFloat64
 	ToFloat32() XFloat32

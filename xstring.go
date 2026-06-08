@@ -16,6 +16,27 @@ var (
 
 type XString string
 
+func (s *XString) Append(value XString) {
+	*s = *s + value
+}
+func (s *XString) AppendWith(value XString, startIndex XInt, endIndex XInt) {
+	if startIndex < 0 {
+		startIndex = 0
+	}
+	if endIndex > value.Length() {
+		endIndex = value.Length()
+	}
+	if startIndex > endIndex {
+		startIndex = endIndex // 此时截取为空字符串
+	}
+	substr := value[startIndex:endIndex]
+	*s = *s + substr
+}
+
+func (s *XString) ToString() XString {
+	return *s
+}
+
 func (s XString) Equal(other XString) XBool {
 	return s == other
 }

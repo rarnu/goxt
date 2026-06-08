@@ -1388,3 +1388,10 @@ func TestXString_FindLastAnyOf(t *testing.T) {
 		assert.EqualValues(t, "c", result4.Value)
 	}
 }
+
+func TestXString_Append(t *testing.T) {
+	s1 := goxt.XString("hello")
+	s1.Append(" world")
+	assert.EqualValues(t, "hello world", s1)
+	assert.EqualValues(t, "hello world", s1.ToString())
+}
