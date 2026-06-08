@@ -71,6 +71,10 @@ func (s XString) Decapitalize() XString {
 	return XString(strings.ToLower(string(s[:1]))) + s[1:]
 }
 
+func (s XString) RuneAt(index XInt) XRune {
+	return XRune([]rune(s)[index])
+}
+
 func (s XString) Repeat(n XInt) XString {
 	if n <= 0 {
 		return ""

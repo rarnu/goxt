@@ -81,3 +81,72 @@ func (m XMap[K, V]) ToList() XList[XMapEntry[K, V]] {
 	}
 	return ret
 }
+
+func (m XMap[K, V]) FlatMap[R Equalable[R]](transform func(XMapEntry[K, V]) XList[R]) XList[R]  {
+	return m.FlatMapTo(NewXList[R](), transform)
+}
+
+func (m XMap[K, V]) FlatMapTo[R Equalable[R]](destination XList[R], transform func(XMapEntry[K, V]) XList[R]) XList[R]  {
+	for _, entry := range m.Entries() {
+		list := transform(entry)
+		destination.AddAll(list)
+	}
+	return destination
+}
+
+func (m XMap[K, V]) MapTo[R Equalable[R]](destination XList[R], transform func(XMapEntry[K, V]) R) XList[R]  {
+	for _, entry := range m.Entries() {
+		destination.Add(transform(entry))
+	}
+	return destination
+}
+
+func (m XMap[K, V]) Map[R Equalable[R]](transform func(XMapEntry[K, V]) R) XList[R] {
+	return m.MapTo(NewXList[R](), transform)
+}
+
+func (m XMap[K, V]) All(predicate func(XMapEntry[K, V]) XBool) XBool {
+	if m.IsEmpty() {
+		return true
+	}
+	for _, item := range m.Entries() {
+		if !predicate(item) {
+			return false
+		}
+	}
+	return true
+}
+
+func (m XMap[K, V]) Any(predicate func(XMapEntry[K, V]) XBool) XBool {
+	if m.IsEmpty() {
+		return false
+	}
+	for _, item := range m.Entries() {
+		if predicate(item) {
+			return true
+		}
+	}
+	return false
+}
+
+func (m XMap[K, V]) Count(predicate func(XMapEntry[K, V]) XBool) XInt {
+	count := XInt(0)
+	for _, item := range m.Entries() {
+		if predicate(item) {
+			count++
+		}
+	}
+	return count
+}
+
+func (m XMap[K, V]) None(predicate func(XMapEntry[K, V]) XBool) XBool {
+	if m.IsEmpty() {
+		return true
+	}
+	for _, item := range m.Entries() {
+		if predicate(item) {
+			return false
+		}
+	}
+	return true
+}

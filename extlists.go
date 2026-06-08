@@ -1,5 +1,7 @@
 package goxt
 
+import "math"
+
 func XEntryListToMap[K Comparable[K], V Equalable[V]](l XList[XMapEntry[K, V]]) XMap[K, V] {
 	if l.IsEmpty() {
 		return XMap[K, V]{}
@@ -187,6 +189,25 @@ func XListSumOf[T NumbersConstraints[T]](l XList[T], selector func(T) T) T {
 	sm := T(0)
 	for _, item := range l {
 		sm += selector(item)
+	}
+	return sm
+}
+
+func XListAverage[T NumbersConstraints[T]](l XList[T]) XFloat64 {
+	sm := 0.0
+	for _, item := range l {
+		sm = sm + float64(item)
+	}
+	if l.Size() == 0 {
+		return XFloat64(math.NaN())
+	}
+	return XFloat64(sm / float64(l.Size()))
+}
+
+func XListSum[T NumbersConstraints[T]](l XList[T]) T {
+	sm := T(0)
+	for _, item := range l {
+		sm = sm + item
 	}
 	return sm
 }

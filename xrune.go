@@ -1,5 +1,7 @@
 package goxt
 
+import "strings"
+
 type XRune rune
 
 const (
@@ -89,4 +91,12 @@ func Char(code XInt) XRune {
 
 func (r XRune) Code() XInt {
 	return XInt(r)
+}
+
+func (r XRune) UpperCase() XRune {
+	return XRune(([]rune(strings.ToUpper(string(r))))[0])
+}
+
+func (r XRune) LowerCase() XRune {
+	return XRune(([]rune(strings.ToLower(string(r))))[0])
 }
