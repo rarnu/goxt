@@ -506,7 +506,7 @@ func (l XList[T]) ReduceIndexed(operation func(XInt, T, T) T) T {
 	}
 	acc := l[0]
 	for index, item := range l[1:] {
-		acc = operation(XInt(index), acc, item)
+		acc = operation(XInt(index+1), acc, item)
 	}
 	return acc
 }
@@ -517,7 +517,7 @@ func (l XList[T]) ReduceIndexedOrNil(operation func(XInt, T, T) T) *T {
 	}
 	acc := l[0]
 	for index, item := range l[1:] {
-		acc = operation(XInt(index), acc, item)
+		acc = operation(XInt(index+1), acc, item)
 	}
 	return &acc
 }
@@ -637,7 +637,7 @@ func (l XList[T]) JoinToStringWithDefaultTransform(separator XString, prefix XSt
 func (l XList[T]) Zip[R Equalable[R]](other XList[R]) XList[XPair[T, R]]  {
 	return nil
 }
- */
+*/
 
 /*
 func (l XList[T]) Chunked(size XInt) XList[XList[T]] {

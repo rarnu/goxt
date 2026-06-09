@@ -150,3 +150,12 @@ func (m XMap[K, V]) None(predicate func(XMapEntry[K, V]) XBool) XBool {
 	}
 	return true
 }
+
+func (m *XMap[K, V]) GetOrPut(key K, defaultValue func() V) V {
+	v, ok := (*m)[key]
+	if !ok {
+		v = defaultValue()
+		(*m)[key] = v
+	}
+	return v
+}
